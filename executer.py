@@ -2,6 +2,13 @@ import logging
 from cowin_helper import CowinWorker
 import notification
 import sys
+import schedule
+import time
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+frequency = os.getenv("FREQUENCY")
 
 class Executer:
     def __init__(self):          
@@ -16,6 +23,7 @@ class Executer:
                     center_names.append(center["name"] for center in msg["details"])
                 result = notification.send_notification(title = msg["message"], message = f"Available centers are {center_names}", timeout = 10)
                 logging.info(result)
+                logging.info(msg["details"])
             else:
                 logging.error(msg)
         else:
@@ -35,15 +43,7 @@ class Executer:
         else:
             logging.info(f"No slots are available in the centers found in {pin} code")
                
-if __name__ == "__main__":    
-    logging.basicConfig(
-        filename="exec.log",
-        filemode= "w",
-        format="%(asctime)s %(levelname)-8s %(message)s",
-        level=logging.INFO,
-        datefmt="%Y-%m-%d %H:%M:%S"   
-    )
-    
+def main():   
     if len(sys.argv)==1 or sys.argv[1] not in ["pin", "district"]:
         logging.warning("Either you missed to give the choice or invalid choice given, please choose between 'pin' or 'district'")
         
@@ -69,3 +69,18 @@ if __name__ == "__main__":
             ex = Executer()
             ex.execute_by_pin(pin, int(age))   
     
+if __name__ == "__main__":    
+    logging.basicConfig(
+        filename="exec.log",
+        filemode= "w",
+        format="%(asctime)s %(levelname)-8s %(message)s",
+        level=logging.INFO,
+        datefmt="%Y-%m-%d %H:%M:%S"   
+    )
+
+    schedule.every(int(frequency)).seconds.do(main)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+
