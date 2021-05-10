@@ -1,13 +1,13 @@
 # cowin-slot-notifier
 
-## What this application does?
+## What does this application do?
 The python script is executed periodically as per set frequency in the python scheduler and once the slot is available for mentioned age group in mentioned district/PIN code area, you will be notified through desktop notification message.
 
 ## Prerequisites
 Python3.x should be installed on your machine. If it is not already installed then download it from [here](https://www.python.org/downloads/)
 
 ## Steps for installation
-1. Clone the repo `git clone git@github.com:gayu19/cowin-slot-notifier.git`
+1. Clone the repo `git clone https://github.com/gayu19/cowin-slot-notifier.git`
 2. Create a virtual environment with command `python -m venv env`
 3. Mac users can activate the virtual environmnet with command `source env/bin/activate`, windows users can activate it with `source env/Scripts/activate`
 4. Create `.env` file in same directory and add below environment variables.
